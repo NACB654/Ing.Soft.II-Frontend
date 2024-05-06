@@ -26,12 +26,12 @@ export default function MyTabs() {
             "&:hover": {
               backgroundColor: "#D3D3D3",
             },
+            fontSize: "15px"
           },
         }}
       >
-        <Tab>First tab</Tab>
+        <Tab>Información de la cuenta</Tab>
         <Tab>Second tab</Tab>
-        <Tab>Third tab</Tab>
       </TabList>
     </Tabs>
   );
