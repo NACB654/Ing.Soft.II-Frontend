@@ -1,5 +1,5 @@
 import MyButtons from "@/app/components/Buttons/MyButtons";
-import MyTabs from "@/app/components/Tabs/MyTabs";
+import MyTabs from "@/app/components/Buttons/Tabs/MyTabs";
 import MyTextInput from "@/app/components/TextInputs/MyTextInputs";
 import styles from "./pruebas.module.css"
 
@@ -13,7 +13,10 @@ export default function PruebasPage() {
           width="200px"
         />
         <br />
-        <MyButtons label={"Ingresar"} width="200px" />
+        <MyButtons label={"Ingresar"}
+          width="200px"
+          variant="outlined"
+        />
         <br />
         <MyTabs />
       </div>
