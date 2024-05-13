@@ -1,0 +1,45 @@
+.main{
+    display: flex;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.images{
+    display: flex;
+    flex-direction: column;
+}
+
+.title{
+    color: #F37021;
+}
+
+.campos{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.textos{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.boton{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.imagen1{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.imagen2{
+    display: flex;
+    justify-content: flex-end;
+}
