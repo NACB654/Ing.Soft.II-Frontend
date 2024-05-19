@@ -3,10 +3,12 @@ import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab from '@mui/joy/Tab';
 
-export default function MyTabs() {
+export default function MyTabs({ selectedTab, onChange }) {
   return (
     <Tabs
       aria-label="Basic tabs"
+      value={selectedTab} // Establece el valor de la pestaña seleccionada
+      onChange={onChange}
       defaultValue={0}
       sx={{
         width: "650px",
@@ -31,7 +33,8 @@ export default function MyTabs() {
         }}
       >
         <Tab>Información de la cuenta</Tab>
-        <Tab>Second tab</Tab>
+        <Tab>Trabajos subidos</Tab>
+        
       </TabList>
     </Tabs>
   );
