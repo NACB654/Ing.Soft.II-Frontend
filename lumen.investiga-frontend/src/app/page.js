@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <main className={styles.main}>
-
+      <img src={"logo.png"} className={styles.logo} />
       <h1 className={styles.title}>LUMENINVESTIGA</h1>
       <form className={styles.form}>
         <label htmlFor="email">Correo</label>
@@ -14,7 +14,7 @@ export default function Home() {
 
         <button type="submit" className={styles.button}>Ingresar</button>
         <button type="button" className={styles.buttonSecondary}>Crear Cuenta</button>
-      </form>    
+      </form>
     </main>
   );
 }
