@@ -8,39 +8,39 @@ import stylesDocumento from "./doc.module.css";
 import ProfileInsert from "../insertarRecurso/page";
 
 export default function ProfilePage() {
-    const [currentDateTime, setCurrentDateTime] = useState('');
+    // const [currentDateTime, setCurrentDateTime] = useState('');
     const [selectedTab, setSelectedTab] = useState(0);
     const [selectedImage, setSelectedImage] = useState("https://img.freepik.com/vector-premium/maestra-dibujos-animados-ilustracion-vectorial-palo-puntero_1023984-14073.jpg");
     const [insertedDataList, setInsertedDataList] = useState([]);
     const [showInsertPage, setShowInsertPage] = useState(false); 
 
-    useEffect(() => {
-        const updateDateTime = () => {
-            const now = new Date();
-            const formattedDateTime = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
-            setCurrentDateTime(formattedDateTime);
-        };
+    // useEffect(() => {
+    //     const updateDateTime = () => {
+    //         const now = new Date();
+    //         const formattedDateTime = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+    //         setCurrentDateTime(formattedDateTime);
+    //     };
 
-        updateDateTime();
-        const intervalId = setInterval(updateDateTime, 1000);
+    //     updateDateTime();
+    //     const intervalId = setInterval(updateDateTime, 1000);
 
-        return () => clearInterval(intervalId);
-    }, []);
+    //     return () => clearInterval(intervalId);
+    // }, []);
 
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
     };
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    // const handleImageChange = (event) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             setSelectedImage(reader.result);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
 
     const handleInsertData = (data) => {
         setInsertedDataList([...insertedDataList, data]); 
@@ -63,10 +63,10 @@ export default function ProfilePage() {
                         <div className={stylesDocente.datos}> 
                             <div className={stylesDocente.contenedores}>
                                 <div className={stylesDocente.textos}>
-                                    <MyTextInput label={"Nombres"} placeholder={"Escribe tus nombres"} />
-                                    <MyTextInput label={"Apellidos"} placeholder={"Escribe tus apellidos"} />
-                                    <MyTextInput label={"Codigo"} placeholder={"Escribe tu codigo"} />
-                                    <MyTextInput label={"Correo"} placeholder={"Escribe tu correo"} />
+                                    <MyTextInput label={"Nombres"} name={"name"} placeholder={"Escribe tus nombres"} />
+                                    <MyTextInput label={"Apellidos"} name={"last_name"} placeholder={"Escribe tus apellidos"} />
+                                    <MyTextInput label={"Codigo"} name={"codigo"} placeholder={"Escribe tu codigo"} />
+                                    <MyTextInput label={"Correo"} name={"email"} placeholder={"Escribe tu correo"} />
                                 </div>
                                 <div className={stylesDocente.botones}>
                                     <MyButtons label={"Modificar"} />

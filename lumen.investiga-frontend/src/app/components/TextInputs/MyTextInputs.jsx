@@ -3,11 +3,14 @@ import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 
-export default function MyTextInput({ label, placeholder, width = "320px" }) {
+export default function MyTextInput({ label, placeholder, name, type = null, width = "320px", onChange}) {
   return (
     <FormControl>
       <FormLabel>{label}</FormLabel>
       <Input
+        name={name}
+        type={type}
+        onChange={onChange}
         placeholder={placeholder}
         sx={{
           width: { width },
