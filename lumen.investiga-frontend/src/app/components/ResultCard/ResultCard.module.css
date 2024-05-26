@@ -1,0 +1,36 @@
+.card {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+.icon {
+    margin-right: 15px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff6600;
+    margin: 0;
+}
+
+.author {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.description {
+    font-size: 14px;
+    color: #777;
+}
