@@ -16,8 +16,7 @@
 
 .boton {
     display: flex;
-    align-self: flex-end;
-    margin-right: 6.5rem;
+    align-self: auto;
 }
 
 .resultados {

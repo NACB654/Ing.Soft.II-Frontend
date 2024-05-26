@@ -1,0 +1,19 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.resultados {
+  display: flex;
+  flex-direction: column;
+}
+
+.buscador {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}

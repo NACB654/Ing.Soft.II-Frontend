@@ -3,6 +3,12 @@ import { API } from "./api";
 const api = new API
 const endpoint = api.URI.concat("/trabajo")
 
+const getTrabajos = async (profe) => {
+  const url = endpoint.concat("/subidos/" + profe)
+
+  return await api.get(url)
+}
+
 const mostrarResultados = async (params) => {
   const url = endpoint.concat("/mostrar")
 
@@ -14,3 +20,7 @@ const mostrarDetalle = async (id) => {
 
   return await api.get(url)
 }
+
+const trabajosAPI = { getTrabajos, mostrarResultados, mostrarDetalle }
+
+export default trabajosAPI;

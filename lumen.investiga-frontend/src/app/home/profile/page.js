@@ -13,6 +13,8 @@ import cursoAPI from "@/app/api/cursoApi";
 import periodoAPI from "@/app/api/periodoApi";
 import odsAPI from "@/app/api/odsApi";
 import profesorAPI from "@/app/api/profesorApi";
+import ResultCard from "@/app/components/ResultCard/ResultCard";
+import trabajosAPI from "@/app/api/trabajosApi";
 
 export default function ProfilePage() {
   const user = useUserContext();
@@ -32,7 +34,8 @@ export default function ProfilePage() {
   const [subareas, setSubareas] = useState([{ id: 0, label: '' }])
   const [cursos, setCursos] = useState([{ id: 0, label: '' }])
   const [periodos, setPeriodos] = useState([{ id: 0, label: '' }])
-  const [ods, setOds] = useState({id: 0, label: ''})
+  const [ods, setOds] = useState({ id: 0, label: '' })
+  const [subidos, setSubidos] = useState([{}])
   const [area, setArea] = useState([''])
   const [subarea, setSubArea] = useState([''])
   const [curso, setCurso] = useState([''])
@@ -43,7 +46,7 @@ export default function ProfilePage() {
     const result = await areasAPI.getAreasYSubareas();
 
     if (result.data) {
-      console.log(result.data)
+      // console.log(result.data)
       const areas = result.data
         .map((item) => ({ id: item.area.id, label: item.area.descripcion }))
         .filter(
@@ -52,8 +55,6 @@ export default function ProfilePage() {
             self.findIndex((t) => t.id === value.id && t.label === value.label)
       );
       const subareas = result.data.map((item) => ({ id: item.id, label: item.descripcion, area: item.area.descripcion }))
-      console.log(subareas)
-      console.log(areas)
       setAreas(areas)
       setSubareas(subareas)
     }
@@ -63,7 +64,7 @@ export default function ProfilePage() {
     const result = await cursoAPI.getCursos();
 
     if (result.data) {
-      console.log(result.data)
+      // console.log(result.data)
       const cursos = result.data.map((item) => ({id: item.id, label: item.descripcion}))
       setCursos(cursos)
     }
@@ -73,7 +74,7 @@ export default function ProfilePage() {
     const result = await periodoAPI.getPeriodos();
 
     if (result.data) {
-      console.log(result.data)
+      // console.log(result.data)
       const periodos = result.data.map((item) => ({id: item.id, label: item.descripcion}))
       setPeriodos(periodos)
     }
@@ -83,9 +84,18 @@ export default function ProfilePage() {
     const result = await odsAPI.getODS();
 
     if (result.data) {
-      console.log(result.data)
+      // console.log(result.data)
       const ods = result.data.map((item) => ({id: item.id, label: item.descripcion}))
       setOds(ods)
+    }
+  }
+
+  const handleLoadSubidos = async () => {
+    const result = await trabajosAPI.getTrabajos(user?.name)
+
+    if (result.data) {
+      console.log(result.data)
+      setSubidos(result.data)
     }
   }
 
@@ -94,6 +104,7 @@ export default function ProfilePage() {
     handleLoadCursos();
     handleLoadPeriodos();
     handleLoadODS();
+    handleLoadSubidos();
   }, []);
 
   const handleChange = (e) => {
@@ -213,35 +224,29 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
-      {selectedTab === 1 && user.isTeacher == false && (
-        <div className={styles.total}>
-          <div className={styles.datos}>
-            {insertedDataList.map((insertedData, index) => (
-              <div key={index} className={styles.doc}>
-                <img className={styles.imagen} src={insertedData.imageUrl} />
-                <div className={styles.textoFechaWrapper}>
-                  <div className={styles.texto}>
-                    <h2 className={styles.titulo1}>{insertedData.title}</h2>
-                    <h3 className={styles.autor1}>{insertedData.author}</h3>
-                    <p className={styles.contenido}>{insertedData.summary}</p>
-                  </div>
-                  <div className={styles.fecha}>
-                    <span>{insertedData.date}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {selectedTab === 1 && user.isTeacher == false && Proximamente}
       {selectedTab === 1 && user.isTeacher == true && (
         <div className={styles.boton}>
           {!showInsertPage && (
-            <MyButtons
-              label={"Subir archivo"}
-              width={"200px"}
-              onClick={handleShowInsertPage}
-            />
+            <div className={styles.trabajosSubidos}>
+              <MyButtons
+                label={"Subir archivo"}
+                width={"200px"}
+                onClick={handleShowInsertPage}
+              />
+              <div className={styles.results}>
+                {subidos?.map((item, key) => {
+                  return (
+                    <ResultCard
+                      title={item.titulo}
+                      subtitle={item.alumno?.name + " " + item.alumno?.last_name}
+                      description={item.abstract}
+                      key={key}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           )}
           {showInsertPage && (
             <div className={styles.formulario}>
@@ -263,7 +268,12 @@ export default function ProfilePage() {
                 name={"keywords"}
                 placeholder={"Escriba los keywords seguidos por comas"}
                 width={"600px"}
-                onChange={(e) => setFormValues({ ...formValues, [e.target.name]: e.target.value.split(", ") })}
+                onChange={(e) =>
+                  setFormValues({
+                    ...formValues,
+                    [e.target.name]: e.target.value.split(", "),
+                  })
+                }
               />
               <MyAutoCompleteList
                 label={"Area"}
@@ -296,14 +306,30 @@ export default function ProfilePage() {
                   placeholder={"Ingrese el nombre del alumno"}
                   name={"name"}
                   width={"280px"}
-                  onChange={(e) => setFormValues({ ...formValues, alumno: {...formValues.alumno, [e.target.name]: e.target.value}})}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      alumno: {
+                        ...formValues.alumno,
+                        [e.target.name]: e.target.value,
+                      },
+                    })
+                  }
                 />
                 <MyTextInput
                   label={"Apellido - Alumno"}
                   placeholder={"Ingrese el codigo del alumno"}
                   name={"last_name"}
                   width={"280px"}
-                  onChange={(e) => setFormValues({ ...formValues, alumno: {...formValues.alumno, [e.target.name]: e.target.value}})}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      alumno: {
+                        ...formValues.alumno,
+                        [e.target.name]: e.target.value,
+                      },
+                    })
+                  }
                 />
               </div>
               <div className={styles.autores}>
@@ -312,14 +338,30 @@ export default function ProfilePage() {
                   placeholder={"Ingrese el nombre del asesor"}
                   name={"name"}
                   width={"280px"}
-                  onChange={(e) => setFormValues({ ...formValues, asesor: {...formValues.asesor, [e.target.name]: e.target.value}})}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      asesor: {
+                        ...formValues.asesor,
+                        [e.target.name]: e.target.value,
+                      },
+                    })
+                  }
                 />
                 <MyTextInput
                   label={"Apellido - Asesor"}
                   placeholder={"Ingrese el codigo del asesor"}
                   name={"last_name"}
                   width={"280px"}
-                  onChange={(e) => setFormValues({ ...formValues, asesor: {...formValues.asesor, [e.target.name]: e.target.value}})}
+                  onChange={(e) =>
+                    setFormValues({
+                      ...formValues,
+                      asesor: {
+                        ...formValues.asesor,
+                        [e.target.name]: e.target.value,
+                      },
+                    })
+                  }
                 />
               </div>
               <MyAutoCompleteList
