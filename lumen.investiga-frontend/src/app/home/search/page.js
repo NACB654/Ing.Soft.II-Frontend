@@ -11,12 +11,7 @@ export default function SearchPage() {
   const [value, setValue] = useState("");
 
   const handleClick = () => {
-    router.push({
-      pathname: "/home/results",
-      query: {
-        keyword: value
-      },
-    });
+    router.push(`/home/results?keyword=${value}`);
   };
 
   return (

@@ -11,7 +11,7 @@ const getTrabajos = async (profe) => {
 
 const mostrarResultados = async (params) => {
   const url = endpoint.concat("/mostrar")
-
+  console.log(params)
   return await api.getParams(url, params)
 }
 

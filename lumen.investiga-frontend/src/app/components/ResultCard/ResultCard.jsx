@@ -2,9 +2,9 @@ import * as React from "react";
 import Image from 'next/image';
 import styles from "./ResultCard.module.css"
 
-export default function ResultCard({ title, subtitle, description }) {
+export default function ResultCard({ title, subtitle, description, id, onClick }) {
     return (
-        <div className={styles.card}>
+        <div className={styles.card} id={id} onClick={onClick}>
             <Image 
                 src="/document-icon.svg"
                 alt="document icon"

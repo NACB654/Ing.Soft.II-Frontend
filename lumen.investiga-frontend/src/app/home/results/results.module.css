@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 20px;
+  padding: 20px 100px;
 }
 
-.resultados {
+.results {
   display: flex;
   flex-direction: column;
 }
@@ -16,4 +16,71 @@
   align-items: center;
   justify-content: center;
   gap: 25px;
+}
+
+.boton {
+  margin-top: 28px;
+}
+
+.trabajos {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 50px;
+}
+
+.resultados {
+  width: 300px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.tituloResultados {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.listaResultados {
+  display: flex;
+  flex-direction: column;
+}
+
+.categoria {
+  margin-bottom: 20px;
+}
+
+.categoriaTitulo {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ff6600;
+  margin-bottom: 5px;
+}
+
+.categoriaItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.cantidad {
+  font-weight: bold;
+  color: #555;
+}
+
+.filters {
+  width: 300px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.filterSection label {
+  display: block;  
+  margin-bottom: 10px;
+}
+
+.filterSection input[type="checkbox"] {
+  margin-right: 10px;
 }

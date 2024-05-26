@@ -30,17 +30,17 @@ export default function ProfilePage() {
     email: user?.email,
   });
   const [formValues, setFormValues] = useState({});
-  const [areas, setAreas] = useState([{ id: 0, label: '' }])
-  const [subareas, setSubareas] = useState([{ id: 0, label: '' }])
-  const [cursos, setCursos] = useState([{ id: 0, label: '' }])
-  const [periodos, setPeriodos] = useState([{ id: 0, label: '' }])
-  const [ods, setOds] = useState({ id: 0, label: '' })
-  const [subidos, setSubidos] = useState([{}])
-  const [area, setArea] = useState([''])
-  const [subarea, setSubArea] = useState([''])
-  const [curso, setCurso] = useState([''])
-  const [periodo, setPeriodo] = useState([''])
-  const [odsId, setOdsId] = useState([''])
+  const [areas, setAreas] = useState([{ id: 0, label: "" }]);
+  const [subareas, setSubareas] = useState([{ id: 0, label: "" }]);
+  const [cursos, setCursos] = useState([{ id: 0, label: "" }]);
+  const [periodos, setPeriodos] = useState([{ id: 0, label: "" }]);
+  const [ods, setOds] = useState({ id: 0, label: "" });
+  const [subidos, setSubidos] = useState([{}]);
+  const [area, setArea] = useState([""]);
+  const [subarea, setSubArea] = useState([""]);
+  const [curso, setCurso] = useState([""]);
+  const [periodo, setPeriodo] = useState([""]);
+  const [odsId, setOdsId] = useState([""]);
 
   const handleLoadAreas = async () => {
     const result = await areasAPI.getAreasYSubareas();
@@ -53,58 +53,73 @@ export default function ProfilePage() {
           (value, index, self) =>
             index ===
             self.findIndex((t) => t.id === value.id && t.label === value.label)
-      );
-      const subareas = result.data.map((item) => ({ id: item.id, label: item.descripcion, area: item.area.descripcion }))
-      setAreas(areas)
-      setSubareas(subareas)
+        );
+      const subareas = result.data.map((item) => ({
+        id: item.id,
+        label: item.descripcion,
+        area: item.area.descripcion,
+      }));
+      setAreas(areas);
+      setSubareas(subareas);
     }
-  }
+  };
 
   const handleLoadCursos = async () => {
     const result = await cursoAPI.getCursos();
 
     if (result.data) {
       // console.log(result.data)
-      const cursos = result.data.map((item) => ({id: item.id, label: item.descripcion}))
-      setCursos(cursos)
+      const cursos = result.data.map((item) => ({
+        id: item.id,
+        label: item.descripcion,
+      }));
+      setCursos(cursos);
     }
-  }
+  };
 
   const handleLoadPeriodos = async () => {
     const result = await periodoAPI.getPeriodos();
 
     if (result.data) {
       // console.log(result.data)
-      const periodos = result.data.map((item) => ({id: item.id, label: item.descripcion}))
-      setPeriodos(periodos)
+      const periodos = result.data.map((item) => ({
+        id: item.id,
+        label: item.descripcion,
+      }));
+      setPeriodos(periodos);
     }
-  }
+  };
 
   const handleLoadODS = async () => {
     const result = await odsAPI.getODS();
 
     if (result.data) {
       // console.log(result.data)
-      const ods = result.data.map((item) => ({id: item.id, label: item.descripcion}))
-      setOds(ods)
+      const ods = result.data.map((item) => ({
+        id: item.id,
+        label: item.descripcion,
+      }));
+      setOds(ods);
     }
-  }
+  };
 
   const handleLoadSubidos = async () => {
-    const result = await trabajosAPI.getTrabajos(user?.name)
+    const result = await trabajosAPI.getTrabajos(user?.name);
 
     if (result.data) {
-      console.log(result.data)
-      setSubidos(result.data)
+      console.log(result.data);
+      setSubidos(result.data);
     }
-  }
+  };
 
   useEffect(() => {
-    handleLoadAreas();
-    handleLoadCursos();
-    handleLoadPeriodos();
-    handleLoadODS();
-    handleLoadSubidos();
+    if (user?.isTeacher) {
+      handleLoadAreas();
+      handleLoadCursos();
+      handleLoadPeriodos();
+      handleLoadODS();
+      handleLoadSubidos();
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -113,7 +128,7 @@ export default function ProfilePage() {
 
   const handleFormChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
-  }
+  };
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -131,20 +146,20 @@ export default function ProfilePage() {
   };
 
   const handleSubirArchivo = async () => {
-    formValues.subareaId = subarea.id
-    formValues.cursoId = curso.id
-    formValues.periodoId = periodo.id
-    formValues.ods = odsId.map(item => item.id)
-    formValues.profesor = user?.name
-    // console.log(formValues)
+    formValues.subareaId = subarea.id;
+    formValues.cursoId = curso.id;
+    formValues.periodoId = periodo.id;
+    formValues.ods = odsId.map((item) => item.id);
+    formValues.profesor = user?.name;
+    console.log(formValues)
 
-    const result = await profesorAPI.subirTrabajo(formValues)
-    console.log(result)
+    const result = await profesorAPI.subirTrabajo(formValues);
+    console.log(result);
 
     if (result.data) {
-      console.log(result.data)
-      alert("Trabajo creado")
-      location.reload()
+      console.log(result.data);
+      alert("Trabajo creado");
+      location.reload();
     }
     // setShowInsertPage(false);
   };
@@ -224,7 +239,7 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
-      {selectedTab === 1 && user.isTeacher == false && Proximamente}
+      {selectedTab === 1 && user.isTeacher == false && <p>Proximamente</p>}
       {selectedTab === 1 && user.isTeacher == true && (
         <div className={styles.boton}>
           {!showInsertPage && (
@@ -239,7 +254,9 @@ export default function ProfilePage() {
                   return (
                     <ResultCard
                       title={item.titulo}
-                      subtitle={item.alumno?.name + " " + item.alumno?.last_name}
+                      subtitle={
+                        item.alumno?.name + " " + item.alumno?.last_name
+                      }
                       description={item.abstract}
                       key={key}
                     />
