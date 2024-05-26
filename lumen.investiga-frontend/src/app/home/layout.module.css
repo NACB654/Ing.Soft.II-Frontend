@@ -26,13 +26,19 @@
 .profile {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 20px;
     padding-right: 20px;
+    padding-top: 10px;
+}
+
+.buttonProfile {
+    background-color: transparent;
+    border-color: transparent;
 }
 
 .textProfile {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 20px;
     color: white;
-    padding-top: 33px;
+    padding-top: 23px;
 }

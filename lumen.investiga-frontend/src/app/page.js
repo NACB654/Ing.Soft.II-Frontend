@@ -19,9 +19,10 @@ export default function Home() {
     console.log(values);
     const result = await usuarioAPI.iniciarSesion(values)
 
-    if (result) {
+    if (result.data) {
       console.log(result.data)
-      alert("Logeado")
+      localStorage.setItem("id", result.data.id);
+      router.push("/home/search")
     }
     else {
       alert("El correo o la contraseña ingresada no son correctos")

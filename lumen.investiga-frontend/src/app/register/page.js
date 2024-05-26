@@ -40,7 +40,7 @@ export default function RegisterPage() {
     if (values.password == pass2) {
       const result = await usuarioAPI.registrarUsaurio(values)
 
-      if (result) {
+      if (result.data) {
         console.log(result.data)
         alert("Usuario creado")
         router.push("/")

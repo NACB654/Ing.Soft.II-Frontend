@@ -3,7 +3,7 @@ import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab from '@mui/joy/Tab';
 
-export default function MyTabs({ selectedTab, onChange }) {
+export default function MyTabs({ selectedTab, onChange, label }) {
   return (
     <Tabs
       aria-label="Basic tabs"
@@ -33,7 +33,7 @@ export default function MyTabs({ selectedTab, onChange }) {
         }}
       >
         <Tab>Información de la cuenta</Tab>
-        <Tab>Trabajos subidos</Tab>
+        <Tab>{label}</Tab>
         
       </TabList>
     </Tabs>

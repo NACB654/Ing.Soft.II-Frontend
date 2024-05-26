@@ -15,6 +15,12 @@ const registrarUsaurio = async (payload) => {
   return await api.post(url, payload);
 }
 
-const usuarioAPI = { iniciarSesion, registrarUsaurio}
+const getUser = async (id) => {
+  const url = endpoint.concat("/data/" + id)
+
+  return await api.get(url)
+}
+
+const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser}
 
 export default usuarioAPI
