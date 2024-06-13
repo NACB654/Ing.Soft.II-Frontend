@@ -12,16 +12,16 @@ export default function ResultPage() {
   const router = useRouter();
   const serachParams = useSearchParams();
   const [value, setValue] = useState("");
-  const [resultados, setResultados] = useState([{}]);
+  const [resultados, setResultados] = useState([{id: 0, titulo: "hola", alumno: {name: "p", last_name: "pp"}, abstract: "lorem ipsum"}]);
 
   const handleLoad = async () => {
     const query = serachParams.get("keyword");
     console.log(query);
     const result = await trabajosAPI.mostrarResultados({ keyword: query });
     
-    if (result.data) {
-      console.log(result.data);
-      setResultados(result.data);
+    if (result?.data) {
+      console.log(result?.data);
+      setResultados(result?.data);
     }
   };
 

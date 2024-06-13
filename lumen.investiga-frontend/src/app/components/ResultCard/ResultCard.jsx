@@ -1,6 +1,7 @@
 import * as React from "react";
 import Image from 'next/image';
 import styles from "./ResultCard.module.css"
+import MyRating from "../Rating/MyRating";
 
 export default function ResultCard({ title, subtitle, description, id, onClick }) {
     return (
