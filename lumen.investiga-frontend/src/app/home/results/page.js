@@ -117,6 +117,7 @@ export default function ResultPage() {
                 subtitle={item.alumno?.name + " " + item.alumno?.last_name}
                 description={item.abstract}
                 key={key}
+                readOnly={true}
                 onClick={() => router.push(`/home/detalle?id=${item.id}`)}
               />
             );

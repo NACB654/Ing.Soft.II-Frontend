@@ -1,10 +1,16 @@
+.trabajo {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
 .card {
     display: flex;
     align-items: flex-start;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    max-width: 60%;
+    width: 60%;
     background-color: #fff;
 }
 
@@ -33,4 +39,8 @@
 .description {
     font-size: 14px;
     color: #777;
+}
+
+.rating {
+    margin-top: 25px;
 }
