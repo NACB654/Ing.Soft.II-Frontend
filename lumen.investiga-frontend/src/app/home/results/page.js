@@ -14,6 +14,8 @@ export default function ResultPage() {
   const [value, setValue] = useState("");
   const [resultados, setResultados] = useState([{}]);
 
+  const [sortOrder, setSortOrder] = useState('asc'); // Estado para manejar el orden de los resultados
+
   const handleLoad = async () => {
     const query = serachParams.get("keyword");
     console.log(query);
@@ -25,10 +27,37 @@ export default function ResultPage() {
     }
   };
 
+
+  const sortResults = (results, order) => {
+    return results.sort((a, b) => {
+      if (order === 'asc') {
+        return a.titulo.localeCompare(b.titulo);
+      } else {
+        return b.titulo.localeCompare(a.titulo);
+      }
+    });
+  };
+
+  /*// Función de ordenamiento que no muta el array original
+  const sortResults = (results, order) => {
+    // Se crea una copia del array antes de ordenarlo para evitar mutar el estado directamente
+    return [...results].sort((a, b) => {
+      return order === 'asc' ? a.titulo.localeCompare(b.titulo) : b.titulo.localeCompare(a.titulo);
+    });
+  }; */ 
+
   useEffect(() => {
     handleLoad();
   }, []);
+
+
+  useEffect(() => {
+    if (resultados.length > 0) {
+      setResultados(prevResultados => sortResults([...prevResultados], sortOrder));
+    }
+  }, [sortOrder]);
   
+
   const handleClick = () => {
     router.push(`/home/results?keyword=${value}`);
   };
@@ -47,6 +76,12 @@ export default function ResultPage() {
           <div className={styles.boton}>
             <MyButtons label={"Buscar"} onClick={handleClick} />
           </div>
+
+          <select value={sortOrder} onChange={e => setSortOrder(e.target.value)} className={styles.dropdown}>
+          <option value="asc">A - Z</option>
+          <option value="desc">Z - A</option>
+          </select>
+
         </div>
         <div className={styles.trabajos}>
           {resultados?.map((item, key) => {
