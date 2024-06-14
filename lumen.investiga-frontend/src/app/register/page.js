@@ -111,14 +111,16 @@ export default function RegisterPage() {
           <MyButtons label={"Crear Cuenta"} onClick={handleClick} />
         </div>
       </div>
-      <div className={styles.images}>
-        <div className={styles.imagen1}>
-          <img src="./image 13.png" width="200" height="200" />
+
+        <div className={styles.images}>
+            <div className={styles.imagen1}>
+                <img src="./image 13.png" width="300" height="300"/>
+            </div>
+            <div className={styles.imagen2}>
+                <img src="./image 14.png" width="300" height="300"/>
+            </div>
         </div>
-        <div className={styles.imagen2}>
-          <img src="./image 14.png" width="200" height="200" />
-        </div>
-      </div>
+
     </main>
   );
 }
