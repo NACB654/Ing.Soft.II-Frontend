@@ -39,6 +39,10 @@
     flex: 2;
 }
 
+.rating {
+    margin-top: 15px;
+}
+
 .trabajo2 {
     display: flex;
     flex-direction: row;

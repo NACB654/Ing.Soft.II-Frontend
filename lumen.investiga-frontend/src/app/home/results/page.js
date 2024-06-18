@@ -118,6 +118,7 @@ export default function ResultPage() {
                 description={item.abstract}
                 key={key}
                 readOnly={true}
+                rating={item.puntaje}
                 onClick={() => router.push(`/home/detalle?id=${item.id}`)}
               />
             );
