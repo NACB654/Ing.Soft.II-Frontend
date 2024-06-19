@@ -182,6 +182,9 @@ export default function ResultPage() {
               <option value="Seminario II">Seminario II</option>
             </select>
           </div>
+          <div className={styles.boton}>
+            <MyButtons label={"Filtrar"} onClick={handleClick} />
+          </div>
         </aside>
       </div>
     </main>

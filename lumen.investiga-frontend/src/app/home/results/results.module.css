@@ -123,3 +123,24 @@
 .filterSection {
   margin-bottom: 20px;
 }
+
+.boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.boton button {
+  background-color: #ff6600; /* Color de fondo */
+  color: #fff; /* Color del texto */
+  padding: 10px 20px; /* Espaciado interno */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 16px; /* Tamaño de fuente */
+  font-weight: bold; /* Negrita para mejor visibilidad */
+  text-transform: uppercase; /* Convertir texto a mayúsculas */
+  letter-spacing: 1px; /* Espaciado entre letras */
+  cursor: pointer; /* Cambiar el cursor al pasar el mouse */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+}
