@@ -12,21 +12,21 @@ export default function ResultPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [value, setValue] = useState("");
-  const [resultados, setResultados] = useState([{id: 0, titulo: "hola", alumno: {name: "p", last_name: "pp"}, abstract: "lorem ipsum"}]);
+  const [resultados, setResultados] = useState([{ id: 0, titulo: "hola", alumno: { name: "p", last_name: "pp" }, abstract: "lorem ipsum" }]);
   const [selectedArea, setSelectedArea] = useState('');
   const [selectedsubArea, setSelectedsubArea] = useState('')
   const [selectedPeriod, setSelectedPeriod] = useState('');
   const [selectedODS, setSelectedODS] = useState('');
   const [selectedCurso, setSelectedCurso] = useState('');
-  
 
-  const [sortOrder, setSortOrder] = useState('asc'); // Estado para manejar el orden de los resultados
+
+  const [sortOrder, setSortOrder] = useState('asc');
 
   const handleLoad = async () => {
     const query = searchParams.get("keyword");
     console.log(query);
     const result = await trabajosAPI.mostrarResultados({ keyword: query });
-    
+
     if (result?.data) {
       console.log(result?.data);
       setResultados(result?.data);
@@ -86,7 +86,7 @@ export default function ResultPage() {
     setSelectedCurso(event.target.value);
   };
 
-  
+
 
   return (
     <main className={styles.main}>
@@ -103,8 +103,8 @@ export default function ResultPage() {
           </div>
 
           <select value={sortOrder} onChange={e => setSortOrder(e.target.value)} className={styles.dropdown}>
-          <option value="asc">A - Z</option>
-          <option value="desc">Z - A</option>
+            <option value="asc">A - Z</option>
+            <option value="desc">Z - A</option>
           </select>
 
         </div>
@@ -118,6 +118,7 @@ export default function ResultPage() {
                 description={item.abstract}
                 key={key}
                 readOnly={true}
+                rating={item.puntaje}
                 onClick={() => router.push(`/home/detalle?id=${item.id}`)}
               />
             );

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from "./ResultCard.module.css"
 import MyRating from "../Rating/MyRating";
 
-export default function ResultCard({ title, subtitle, description, id, onClick, readOnly }) {
+export default function ResultCard({ title, subtitle, description, id, onClick, readOnly, withRating = true, rating}) {
     return (
       <div className={styles.trabajo}>
         <div className={styles.card} id={id} onClick={onClick}>
@@ -21,7 +21,7 @@ export default function ResultCard({ title, subtitle, description, id, onClick, 
           </div>
         </div>
         <div className={styles.rating}>
-          <MyRating readOnly={readOnly}/>
+          { withRating == true ? <MyRating readOnly={readOnly} rating={rating} null/> : null}
         </div>
       </div>
     );
