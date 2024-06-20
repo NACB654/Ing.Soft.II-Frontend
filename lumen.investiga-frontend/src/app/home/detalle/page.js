@@ -6,6 +6,7 @@ import MyButtons from "@/app/components/Buttons/MyButtons";
 import { useSearchParams } from "next/navigation";
 import trabajosAPI from "@/app/api/trabajosApi";
 import { style } from "@mui/system";
+import MyTextArea from "@/app/components/TextArea/MyTextArea";
 
 export default function DetallePage() {
   const searchParams = useSearchParams();
@@ -80,21 +81,11 @@ export default function DetallePage() {
           </div>
         </div>
       </section>
-      {/* <section className="comentarios">
-        <h2>Comentarios</h2>
-        <div className="comentario">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-            dignissim in eros vitae vehicula.
-          </p>
-          <p>- Luisa Sanchez, 22-06-2023</p>
-        </div>
-        <form className="nuevo-comentario">
-          <label htmlFor="comentario">Agrega tu comentario:</label>
-          <textarea id="comentario" name="comentario"></textarea>
-          <button type="submit">Enviar</button>
-        </form>
-      </section> */}
+      {<section className="comentarios">
+        <MyTextArea name = {"descripcion"} placeholder = {"Deja tu comentario"} label = {"Comentario"}/>
+        <MyButtons label={"Enviar"}/>
+
+      </section>}
     </main>
   );
 }
