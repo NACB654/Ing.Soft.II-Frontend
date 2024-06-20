@@ -8,10 +8,16 @@ import trabajosAPI from "@/app/api/trabajosApi";
 import { style } from "@mui/system";
 import MyTextArea from "@/app/components/TextArea/MyTextArea";
 import MyRating from "@/app/components/Rating/MyRating";
+import cometarioAPI from "@/app/api/comentarioApi";
+import dayjs from "dayjs";
+import { useUserContext } from "../layout";
 
 export default function DetallePage() {
+  const user = useUserContext();
   const searchParams = useSearchParams();
   const [trabajo, setTrabajo] = useState({});
+  const [comentarios, setComentarios] = useState([{}]);
+  const [value, setValue] = useState("");
 
   const handleLoad = async () => {
     const query = searchParams.get("id");
@@ -24,9 +30,36 @@ export default function DetallePage() {
     }
   };
 
+  const handleLoadComentarios = async () => {
+    const query = searchParams.get("id");
+    console.log(query);
+    const result = await cometarioAPI.getComentarios(query);
+
+    if (result.data) {
+      console.log(result.data);
+      setComentarios(result.data);
+    }
+  };
+
   useEffect(() => {
     handleLoad();
+    handleLoadComentarios();
   }, []);
+
+  const handleClick = async () => {
+    const data = {
+      descripcion: value,
+      trabajoId: trabajo.id,
+      usuarioId: user.id
+    }
+
+    const result = await cometarioAPI.crearComentario(data)
+
+    if (result.data) {
+      alert("Tu comentario se envio satisfactoriamente")
+      location.reload()
+    }
+  };
 
   return (
     <main className={styles.main}>
@@ -49,7 +82,7 @@ export default function DetallePage() {
             onClick={() => window.open(trabajo?.archivo_url, `_blank`)}
           />
           <div className={styles.rating}>
-            <MyRating readOnly={false} rating={0} trabajoId={trabajo?.id}/>
+            <MyRating readOnly={false} rating={0} trabajoId={trabajo?.id} />
           </div>
         </div>
         <div className={styles.trabajo2}>
@@ -85,11 +118,35 @@ export default function DetallePage() {
           </div>
         </div>
       </section>
-      {<section className="comentarios">
-        <MyTextArea name = {"descripcion"} placeholder = {"Deja tu comentario"} label = {"Comentario"}/>
-        <MyButtons label={"Enviar"}/>
-
-      </section>}
+      <section className={styles.comentarios}>
+        <MyTextArea
+          name={"descripcion"}
+          placeholder={"Deja tu comentario"}
+          label={"Comenta acerca de este trabajo"}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <MyButtons label={"Enviar"} onClick={handleClick}/>
+      </section>
+      <section className={styles.listaComentarios}>
+        <label className={styles.label}>Comentarios</label>
+        {comentarios.length > 0 ? (
+          comentarios?.map((item, key) => {
+            return (
+              <div className={styles.comentario}>
+                <div className={styles.infoUsuario}>
+                  <p className={styles.nombre}>
+                    {item.usuario?.name + " " + item.usuario?.last_name}
+                  </p>
+                  {dayjs(item.creationDate).format("DD/MM/YYYY")}
+                </div>
+                <div className={styles.infoComentario}>{item.descripcion}</div>
+              </div>
+            );
+          })
+        ) : (
+          <p className={styles.sinComentarios}>No se han dejado comentarios</p>
+        )}
+      </section>
     </main>
   );
 }

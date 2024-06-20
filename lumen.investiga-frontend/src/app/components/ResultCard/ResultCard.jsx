@@ -21,7 +21,7 @@ export default function ResultCard({ title, subtitle, description, id, onClick, 
           </div>
         </div>
         <div className={styles.rating}>
-          { withRating == true ? <MyRating readOnly={readOnly} rating={rating} null/> : null}
+          { withRating == true ? <MyRating readOnly={readOnly} rating={rating}/> : null}
         </div>
       </div>
     );

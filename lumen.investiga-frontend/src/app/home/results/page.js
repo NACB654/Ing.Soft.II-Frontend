@@ -12,7 +12,7 @@ export default function ResultPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [value, setValue] = useState("");
-  const [resultados, setResultados] = useState([{ id: 0, titulo: "hola", alumno: { name: "p", last_name: "pp" }, abstract: "lorem ipsum" }]);
+  const [resultados, setResultados] = useState([{}]);
   const [selectedArea, setSelectedArea] = useState('');
   const [selectedsubArea, setSelectedsubArea] = useState('')
   const [selectedPeriod, setSelectedPeriod] = useState('');
