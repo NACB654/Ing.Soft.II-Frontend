@@ -92,3 +92,55 @@
 .filterSection input[type="checkbox"] {
   margin-right: 10px;
 }
+
+.filterSection h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #ff6600;
+  padding: 10px;
+  border-radius: 4%;
+  margin: 0;
+  display: inline-block;
+}
+
+.filterSection select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.filterSection select:hover {
+  border-color: #ff6600;
+}
+
+.filterSection {
+  margin-bottom: 20px;
+}
+
+.boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.boton button {
+  background-color: #ff6600; /* Color de fondo */
+  color: #fff; /* Color del texto */
+  padding: 10px 20px; /* Espaciado interno */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  font-size: 16px; /* Tamaño de fuente */
+  font-weight: bold; /* Negrita para mejor visibilidad */
+  text-transform: uppercase; /* Convertir texto a mayúsculas */
+  letter-spacing: 1px; /* Espaciado entre letras */
+  cursor: pointer; /* Cambiar el cursor al pasar el mouse */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+}

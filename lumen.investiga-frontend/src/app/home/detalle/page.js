@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import trabajosAPI from "@/app/api/trabajosApi";
 import { style } from "@mui/system";
 import MyTextArea from "@/app/components/TextArea/MyTextArea";
+import MyRating from "@/app/components/Rating/MyRating";
 
 export default function DetallePage() {
   const searchParams = useSearchParams();
@@ -47,6 +48,9 @@ export default function DetallePage() {
             label={"Abrir PDF"}
             onClick={() => window.open(trabajo?.archivo_url, `_blank`)}
           />
+          <div className={styles.rating}>
+            <MyRating readOnly={false} rating={0} trabajoId={trabajo?.id}/>
+          </div>
         </div>
         <div className={styles.trabajo2}>
           <div className={styles.columna1}>
