@@ -11,7 +11,6 @@ const getTrabajos = async (profe) => {
 
 const mostrarResultados = async (params) => {
   const url = endpoint.concat("/mostrar")
-  console.log(params)
   return await api.getParams(url, params)
 }
 
@@ -21,6 +20,12 @@ const mostrarDetalle = async (id) => {
   return await api.get(url)
 }
 
-const trabajosAPI = { getTrabajos, mostrarResultados, mostrarDetalle }
+const filtrarResultados = async (payload) => {
+  const url = endpoint.concat("/filtrar")
+
+  return await api.post(url, payload)
+}
+
+const trabajosAPI = { getTrabajos, mostrarResultados, mostrarDetalle, filtrarResultados}
 
 export default trabajosAPI;

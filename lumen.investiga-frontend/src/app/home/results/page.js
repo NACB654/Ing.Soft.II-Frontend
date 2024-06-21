@@ -13,30 +13,88 @@ export default function ResultPage() {
   const searchParams = useSearchParams();
   const [value, setValue] = useState("");
   const [resultados, setResultados] = useState([{}]);
-  const [selectedArea, setSelectedArea] = useState('');
-  const [selectedsubArea, setSelectedsubArea] = useState('')
-  const [selectedPeriod, setSelectedPeriod] = useState('');
-  const [selectedODS, setSelectedODS] = useState('');
-  const [selectedCurso, setSelectedCurso] = useState('');
-
-
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [selectedArea, setSelectedArea] = useState("");
+  const [selectedsubArea, setSelectedsubArea] = useState("");
+  const [selectedPeriod, setSelectedPeriod] = useState("");
+  const [selectedODS, setSelectedODS] = useState("");
+  const [selectedCurso, setSelectedCurso] = useState("");
+  const [areas, setAreas] = useState([]);
+  const [subAreas, setsubAreas] = useState([]);
+  const [periodos, setPeriodos] = useState([]);
+  const [ods, setOds] = useState([]);
+  const [cursos, setCursos] = useState([]);
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleLoad = async () => {
     const query = searchParams.get("keyword");
-    console.log(query);
+    setValue(query)
     const result = await trabajosAPI.mostrarResultados({ keyword: query });
 
     if (result?.data) {
       console.log(result?.data);
       setResultados(result?.data);
+
+      let subarea = result?.data.map((item) => ({
+        id: item.subArea.id,
+        descripcion: item.subArea.descripcion,
+        area: item.subArea.area.id,
+      }));
+      subarea = subarea.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex((t) => t.id === value.id && t.label === value.label)
+      );
+      console.log(subarea);
+      setsubAreas(subarea);
+
+      let periodo = result?.data.map((item) => ({
+        id: item.periodo.id,
+        descripcion: item.periodo.descripcion,
+      }));
+      periodo = periodo.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex((t) => t.id === value.id && t.label === value.label)
+      );
+      setPeriodos(periodo);
+
+      let area = result?.data.map((item) => ({
+        id: item.subArea.area.id,
+        descripcion: item.subArea.area.descripcion,
+      }));
+      area = area.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex((t) => t.id === value.id && t.label === value.label)
+      );
+      setAreas(area);
+
+      let curso = result?.data.map((item) => ({
+        id: item.curso.id,
+        descripcion: item.curso.descripcion,
+      }));
+      curso = curso.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex((t) => t.id === value.id && t.label === value.label)
+      );
+      setCursos(curso);
+
+      let ods = result?.data.map((item) => item.ods.map((item2) => item2));
+      ods = ods.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex(
+            (t) => t[0].id === value[0].id && t[0].label === value[0].label
+          )
+      );
+      setOds(ods);
     }
   };
 
-
   const sortResults = (results, order) => {
     return results.sort((a, b) => {
-      if (order === 'asc') {
+      if (order === "asc") {
         return a.titulo.localeCompare(b.titulo);
       } else {
         return b.titulo.localeCompare(a.titulo);
@@ -58,7 +116,9 @@ export default function ResultPage() {
 
   useEffect(() => {
     if (resultados.length > 0) {
-      setResultados(prevResultados => sortResults([...prevResultados], sortOrder));
+      setResultados((prevResultados) =>
+        sortResults([...prevResultados], sortOrder)
+      );
     }
   }, [sortOrder]);
 
@@ -86,7 +146,23 @@ export default function ResultPage() {
     setSelectedCurso(event.target.value);
   };
 
+  const handleFiltrar = async () => {
+    const data = {
+      keyword: value,
+      areaId: selectedArea,
+      subareaId: selectedsubArea,
+      periodoId: selectedPeriod,
+      ods: selectedODS,
+      cursoId: selectedCurso
+    }
+    
+    const result = await trabajosAPI.filtrarResultados(data)
 
+    if (result.data) {
+      console.log(result.data)
+      setResultados(result.data)
+    }
+  };
 
   return (
     <main className={styles.main}>
@@ -102,11 +178,14 @@ export default function ResultPage() {
             <MyButtons label={"Buscar"} onClick={handleClick} />
           </div>
 
-          <select value={sortOrder} onChange={e => setSortOrder(e.target.value)} className={styles.dropdown}>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            className={styles.dropdown}
+          >
             <option value="asc">A - Z</option>
             <option value="desc">Z - A</option>
           </select>
-
         </div>
         <div className={styles.trabajos}>
           {resultados?.map((item, key) => {
@@ -131,63 +210,90 @@ export default function ResultPage() {
           <div className={styles.filterSection}>
             <h3>Área</h3>
             <select value={selectedArea} onChange={handleAreaChange}>
-              <option value="IoT">IoT</option>
-              <option value="Software">Software</option>
-              <option value="Cloud Computing">Cloud Computing</option>
-              <option value="Inteligencia Artificial">Inteligencia Artificial</option>
+              <option disabled selected value="">
+                {" "}
+                -- selecciona una área --{" "}
+              </option>
+              {areas.map((item, key) => {
+                return (
+                  <option value={item.id} key={key}>
+                    {item.descripcion}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div className={styles.filterSection}>
             <h3>Subárea</h3>
             <select value={selectedsubArea} onChange={handlesubAreaChange}>
-              <option value="Procesamiento de Lenguaje Natural">Procesamiento de Lenguaje Natural</option>
-              <option value="Aprendizaje Automático">Aprendizaje Automático</option>
-              <option value="Minería de Datos">Minería de Datos</option>
-              <option value="Seguridad de Sistemas y Aplicaciones">Seguridad de Sistemas y Aplicaciones</option>
-              <option value="Computación de alto rendimiento">Computación de alto rendimiento</option>
-              <option value="Redes y ciberseguridad">Redes y ciberseguridad</option>
+              <option disabled selected value="">
+                {" "}
+                -- selecciona una subárea --{" "}
+              </option>
+              {subAreas
+                .filter((item) => item.area == selectedArea)
+                .map((item, key) => {
+                  return (
+                    <option value={item.id} key={key}>
+                      {item.descripcion}
+                    </option>
+                  );
+                })}
             </select>
           </div>
           <div className={styles.filterSection}>
             <h3>Periodo</h3>
             <select value={selectedPeriod} onChange={handlePeriodChange}>
-              <option value="2022-2">2022-2</option>
-              <option value="2022-1">2022-1</option>
-              <option value="2021-2">2021-2</option>
+              <option disabled selected value="">
+                {" "}
+                -- selecciona el periodo --{" "}
+              </option>
+              {periodos.map((item, key) => {
+                return (
+                  <option value={item.id} key={key}>
+                    {item.descripcion}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div className={styles.filterSection}>
             <h3>ODS</h3>
             <select value={selectedODS} onChange={handleODSChange}>
-              <option value="ODS 1 - Fin de la Pobreza">ODS 1 - Fin de la Pobreza</option>
-              <option value="ODS 2 - Hambre Cero">ODS 2 - Hambre Cero</option>
-              <option value="ODS 3 - Salud y Bienestar">ODS 3 - Salud y Bienestar</option>
-              <option value="ODS 4 - Educacion de Calidad">ODS 4 - Educacion de Calidad</option>
-              <option value="ODS 5 - Igualdad de Genero">ODS 5 - Igualdad de Genero</option>
-              <option value="ODS 6 - Agua Limpia y Saneamiento">ODS 6 - Agua Limpia y Saneamiento</option>
-              <option value="ODS 7 - Energía Asequible y No Contaminable">ODS 7 - Energía Asequible y No Contaminable</option>
-              <option value="ODS 8 - Trabajo Decente y Crecimiento Economico">ODS 8 - Trabajo Decente y Crecimiento Economico</option>
-              <option value="ODS 9 - Industria, Innovacion e Infrastructura">ODS 9 - Industria, Innovacion e Infrastructura</option>
-              <option value="ODS 10 - Reduccion de las Desigualdades">ODS 10 - Reduccion de las Desigualdades</option>
-              <option value="ODS 11 - Ciudades y Comunidades Sostenibles">ODS 11 - Ciudades y Comunidades Sostenibles</option>
-              <option value="ODS 12 - Produccion y Consumo Responsables">ODS 12 - Produccion y Consumo Responsables</option>
-              <option value="ODS 13 - Accion por el Clima">ODS 13 - Accion por el Clima</option>
+              <option disabled selected value="">
+                {" "}
+                -- selecciona la ODS --{" "}
+              </option>
+              {ods.map((item, key) => {
+                return (
+                  <option value={item[0].id} key={key}>
+                    {item[0].descripcion}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div className={styles.filterSection}>
             <h3>Curso</h3>
             <select value={selectedCurso} onChange={handleCursoChange}>
-              <option value="Taller de Propuesta de Investigacion">Taller de Propuesta de Investigacion</option>
-              <option value="Seminario I">Seminario I</option>
-              <option value="Seminario II">Seminario II</option>
+              <option disabled selected value="">
+                {" "}
+                -- selecciona el curso --{" "}
+              </option>
+              {cursos.map((item, key) => {
+                return (
+                  <option value={item.id} key={key}>
+                    {item.descripcion}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div className={styles.boton}>
-            <MyButtons label={"Filtrar"} onClick={handleClick} />
+            <MyButtons label={"Filtrar"} onClick={handleFiltrar} />
           </div>
         </aside>
       </div>
     </main>
   );
 }
-
