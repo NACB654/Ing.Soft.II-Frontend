@@ -11,6 +11,7 @@ import trabajosAPI from "@/app/api/trabajosApi";
 export default function ResultPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const [value, setValue] = useState("");
   const [resultados, setResultados] = useState([{}]);
   const [selectedArea, setSelectedArea] = useState("");
@@ -24,6 +25,10 @@ export default function ResultPage() {
   const [ods, setOds] = useState([]);
   const [cursos, setCursos] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const resultsPerPage = 5;
+
 
   const handleLoad = async () => {
     const query = searchParams.get("keyword");
@@ -102,14 +107,6 @@ export default function ResultPage() {
     });
   };
 
-  /*// Función de ordenamiento que no muta el array original
-  const sortResults = (results, order) => {
-    // Se crea una copia del array antes de ordenarlo para evitar mutar el estado directamente
-    return [...results].sort((a, b) => {
-      return order === 'asc' ? a.titulo.localeCompare(b.titulo) : b.titulo.localeCompare(a.titulo);
-    });
-  }; */
-
   useEffect(() => {
     handleLoad();
   }, []);
@@ -145,6 +142,18 @@ export default function ResultPage() {
   const handleCursoChange = (event) => {
     setSelectedCurso(event.target.value);
   };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= Math.ceil(resultados.length / resultsPerPage)) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  const totalPages = Math.ceil(resultados.length / resultsPerPage);
+  const currentResults = resultados.slice(
+    (currentPage - 1) * resultsPerPage,
+    currentPage * resultsPerPage
+  )
 
   const handleFiltrar = async () => {
     const data = {
@@ -188,7 +197,7 @@ export default function ResultPage() {
           </select>
         </div>
         <div className={styles.trabajos}>
-          {resultados?.map((item, key) => {
+          {currentResults?.map((item, key) => {
             return (
               <ResultCard
                 id={item.id}
@@ -203,6 +212,25 @@ export default function ResultPage() {
             );
           })}
         </div>
+        {resultados.length != 0 ? (
+          <div className={styles.pagination}>
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+            <span>
+              {currentPage} de {totalPages}
+            </span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
+        ) : null}
       </div>
       <div className={styles.resultados}>
         <div className={styles.tituloResultados}>Filtros</div>
