@@ -11,6 +11,7 @@ import MyRating from "@/app/components/Rating/MyRating";
 import cometarioAPI from "@/app/api/comentarioApi";
 import dayjs from "dayjs";
 import { useUserContext } from "../layout";
+import MyBookmarkButton from "@/app/components/Bookmark/MyBookmarkButton";
 
 export default function DetallePage() {
   const user = useUserContext();
@@ -83,6 +84,7 @@ export default function DetallePage() {
           />
           <div className={styles.rating}>
             <MyRating readOnly={false} rating={0} trabajoId={trabajo?.id} />
+            <MyBookmarkButton />
           </div>
         </div>
         <div className={styles.trabajo2}>
