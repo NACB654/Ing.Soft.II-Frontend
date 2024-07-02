@@ -5,7 +5,6 @@ import styles from "./detalle.module.css";
 import MyButtons from "@/app/components/Buttons/MyButtons";
 import { useSearchParams } from "next/navigation";
 import trabajosAPI from "@/app/api/trabajosApi";
-import { style } from "@mui/system";
 import MyTextArea from "@/app/components/TextArea/MyTextArea";
 import MyRating from "@/app/components/Rating/MyRating";
 import cometarioAPI from "@/app/api/comentarioApi";
@@ -16,18 +15,28 @@ import MyBookmarkButton from "@/app/components/Bookmark/MyBookmarkButton";
 export default function DetallePage() {
   const user = useUserContext();
   const searchParams = useSearchParams();
+
   const [trabajo, setTrabajo] = useState({});
   const [comentarios, setComentarios] = useState([{}]);
   const [value, setValue] = useState("");
+  const [isMarked, setIsMarked] = useState(false);
+  const [loading, setLoading] = useState(true)
 
   const handleLoad = async () => {
     const query = searchParams.get("id");
-    console.log(query);
+    // console.log(query);
     const result = await trabajosAPI.mostrarDetalle(query);
 
     if (result.data) {
-      console.log(result.data);
+      // console.log(result.data);
       setTrabajo(result.data);
+
+      if (result.data.usuarios.filter(item => item.id == user.id).length > 0) {
+        // console.log("hola")
+        setIsMarked(true)
+      }
+
+      setLoading(false)
     }
   };
 
@@ -37,7 +46,7 @@ export default function DetallePage() {
     const result = await cometarioAPI.getComentarios(query);
 
     if (result.data) {
-      console.log(result.data);
+      // console.log(result.data);
       setComentarios(result.data);
     }
   };
@@ -84,7 +93,13 @@ export default function DetallePage() {
           />
           <div className={styles.rating}>
             <MyRating readOnly={false} rating={0} trabajoId={trabajo?.id} />
-            <MyBookmarkButton />
+            {!user?.isTeacher && !loading ? (
+              <MyBookmarkButton
+                userId={user?.id}
+                trabajoId={trabajo?.id}
+                isMarked={isMarked}
+              />
+            ) : null}
           </div>
         </div>
         <div className={styles.trabajo2}>
@@ -127,7 +142,7 @@ export default function DetallePage() {
           label={"Comenta acerca de este trabajo"}
           onChange={(e) => setValue(e.target.value)}
         />
-        <MyButtons label={"Enviar"} onClick={handleClick}/>
+        <MyButtons label={"Enviar"} onClick={handleClick} />
       </section>
       <section className={styles.listaComentarios}>
         <label className={styles.label}>Comentarios</label>

@@ -9,6 +9,12 @@ const getTrabajos = async (profe) => {
   return await api.get(url)
 }
 
+const getTrabajosGuardados = async (id) => {
+  const url = endpoint.concat("/guardados/" + id)
+
+  return api.get(url)
+}
+
 const mostrarResultados = async (params) => {
   const url = endpoint.concat("/mostrar")
   return await api.getParams(url, params)
@@ -26,6 +32,6 @@ const filtrarResultados = async (payload) => {
   return await api.post(url, payload)
 }
 
-const trabajosAPI = { getTrabajos, mostrarResultados, mostrarDetalle, filtrarResultados}
+const trabajosAPI = { getTrabajos, mostrarResultados, mostrarDetalle, filtrarResultados, getTrabajosGuardados}
 
 export default trabajosAPI;

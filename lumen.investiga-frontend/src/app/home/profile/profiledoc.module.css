@@ -84,6 +84,11 @@
     align-items: center;
     gap: 15px;
 }
+
+.trabajosGuardados {
+    margin-top: 15px;
+}
+
 .results {
     display: flex;
     flex-direction: column;

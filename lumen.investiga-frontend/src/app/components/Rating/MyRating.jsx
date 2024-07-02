@@ -24,6 +24,9 @@ export default function MyRating({readOnly, rating, trabajoId = 0}) {
       precision={0.5}
       readOnly={thisReadOnly}
       onChange={handleChange}
+      sx={{
+        marginTop: "7px"
+      }}
     />
   );
 }

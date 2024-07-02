@@ -15,9 +15,12 @@ import odsAPI from "@/app/api/odsApi";
 import profesorAPI from "@/app/api/profesorApi";
 import ResultCard from "@/app/components/ResultCard/ResultCard";
 import trabajosAPI from "@/app/api/trabajosApi";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const user = useUserContext();
+  const router = useRouter();
+  
   // const [currentDateTime, setCurrentDateTime] = useState('');
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedImage, setSelectedImage] = useState("/user.png");
@@ -36,6 +39,7 @@ export default function ProfilePage() {
   const [periodos, setPeriodos] = useState([{ id: 0, label: "" }]);
   const [ods, setOds] = useState({ id: 0, label: "" });
   const [subidos, setSubidos] = useState([{}]);
+  const [guardados, setGuardados] = useState([{}]);
   const [area, setArea] = useState([""]);
   const [subarea, setSubArea] = useState([""]);
   const [curso, setCurso] = useState([""]);
@@ -112,6 +116,15 @@ export default function ProfilePage() {
     }
   };
 
+  const handleLoadGuardados = async () => {
+    const result = await trabajosAPI.getTrabajosGuardados(user?.id);
+
+    if (result.data) {
+      console.log(result.data);
+      setGuardados(result.data);
+    }
+  };
+
   useEffect(() => {
     if (user?.isTeacher) {
       handleLoadAreas();
@@ -119,6 +132,9 @@ export default function ProfilePage() {
       handleLoadPeriodos();
       handleLoadODS();
       handleLoadSubidos();
+    }
+    else {
+      handleLoadGuardados();
     }
   }, []);
 
@@ -239,7 +255,24 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
-      {selectedTab === 1 && user.isTeacher == false && <p>Proximamente</p>}
+      {selectedTab === 1 && user.isTeacher == false && (
+        <div className={styles.trabajosGuardados}>
+          <div className={styles.results}>
+            {guardados?.map((item, key) => {
+              return (
+                <ResultCard
+                  title={item.titulo}
+                  subtitle={item.alumno?.name + " " + item.alumno?.last_name}
+                  description={item.abstract}
+                  key={key}
+                  withRating={false}
+                  onClick={() => router.push(`/home/detalle?id=${item.id}`)}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
       {selectedTab === 1 && user.isTeacher == true && (
         <div className={styles.boton}>
           {!showInsertPage && (

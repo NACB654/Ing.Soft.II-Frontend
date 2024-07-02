@@ -21,6 +21,12 @@ const getUser = async (id) => {
   return await api.get(url)
 }
 
-const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser}
+const guardarTrabajo = async (payload) => {
+  const url = endpoint.concat("/guardar")
+
+  return await api.post(url, payload)
+}
+
+const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser, guardarTrabajo}
 
 export default usuarioAPI
