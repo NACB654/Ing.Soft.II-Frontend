@@ -9,6 +9,12 @@ const iniciarSesion = async (payload) => {
   return await api.post(url, payload);
 }
 
+const modificarDatos = async (payload) => {
+  const url = endpoint.concat("/modificar")
+
+  return await api.post(url, payload);
+}
+
 const registrarUsaurio = async (payload) => {
   const url = endpoint.concat("/registro")
 
@@ -24,9 +30,9 @@ const getUser = async (id) => {
 const guardarTrabajo = async (payload) => {
   const url = endpoint.concat("/guardar")
 
-  return await api.post(url, payload)
+  return await api.put(url, payload)
 }
 
-const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser, guardarTrabajo}
+const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser, guardarTrabajo, modificarDatos}
 
 export default usuarioAPI

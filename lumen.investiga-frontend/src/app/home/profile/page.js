@@ -16,6 +16,7 @@ import profesorAPI from "@/app/api/profesorApi";
 import ResultCard from "@/app/components/ResultCard/ResultCard";
 import trabajosAPI from "@/app/api/trabajosApi";
 import { useRouter } from "next/navigation";
+import usuarioAPI from "@/app/api/usuarioApi";
 
 export default function ProfilePage() {
   const user = useUserContext();
@@ -184,6 +185,17 @@ export default function ProfilePage() {
     setShowInsertPage(true);
   };
 
+  const handleModificar = async () => {
+    const data = values;
+    data.id = user.id
+    const result = await usuarioAPI.modificarDatos(data);
+
+    if (result.data) {
+      alert("Los datos han sido actualizados")
+      location.reload()
+    }
+  }
+
   return (
     <main className={styles.main}>
       <div className={styles.tabs}>
@@ -229,7 +241,7 @@ export default function ProfilePage() {
                 />
               </div>
               <div className={styles.botones}>
-                <MyButtons label={"Modificar"} width={"180px"} />
+                <MyButtons label={"Modificar"} width={"180px"} onClick={handleModificar} />
                 <MyButtons
                   label={"Cambiar contraseña"}
                   variant="outlined"
