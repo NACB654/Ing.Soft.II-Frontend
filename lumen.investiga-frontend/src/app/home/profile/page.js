@@ -17,15 +17,14 @@ import ResultCard from "@/app/components/ResultCard/ResultCard";
 import trabajosAPI from "@/app/api/trabajosApi";
 import { useRouter } from "next/navigation";
 import usuarioAPI from "@/app/api/usuarioApi";
+import Image from 'next/image';
 
 export default function ProfilePage() {
   const user = useUserContext();
   const router = useRouter();
   
-  // const [currentDateTime, setCurrentDateTime] = useState('');
   const [selectedTab, setSelectedTab] = useState(0);
-  const [selectedImage, setSelectedImage] = useState("/user.png");
-  const [insertedDataList, setInsertedDataList] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(user?.foto_url);
   const [showInsertPage, setShowInsertPage] = useState(false);
   const [values, setValues] = useState({
     name: user?.name,
@@ -151,7 +150,7 @@ export default function ProfilePage() {
     setSelectedTab(newValue);
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -159,6 +158,16 @@ export default function ProfilePage() {
         setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
+
+      const formData = new FormData();
+      formData.append("file", file)
+      formData.append("id", user?.id)
+
+      const result = await usuarioAPI.subirFoto(formData)
+
+      if (result.data) {
+        alert("Imagen guardada");
+      }
     }
   };
 
@@ -251,7 +260,8 @@ export default function ProfilePage() {
             </div>
           </div>
           <div className={styles.cambiar}>
-            <img className={styles.imagen} src={selectedImage} />
+            {/* <img className={styles.imagen} src={selectedImage == null ? "/user.png" : selectedImage} /> */}
+            <Image src={selectedImage == null ? "/user.png" : selectedImage} alt="foto_perfil" width={200} height={200} />
             <MyButtons
               label={"Cambiar foto"}
               onClick={() => document.getElementById("upload-image").click()}

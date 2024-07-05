@@ -34,6 +34,19 @@ export class API {
     }
   }
 
+  async postFormData(endpoint, payload) {
+    try {
+      return await axios.post(endpoint, payload, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
+
   async put(endpoint, payload) {
     try {
       return await axios.put(endpoint, payload);
