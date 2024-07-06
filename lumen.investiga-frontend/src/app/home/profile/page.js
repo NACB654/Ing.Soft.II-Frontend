@@ -255,6 +255,7 @@ export default function ProfilePage() {
                   label={"Cambiar contraseña"}
                   variant="outlined"
                   width={"180px"}
+                  onClick={() => router.push("/home/password")}
                 />
               </div>
             </div>

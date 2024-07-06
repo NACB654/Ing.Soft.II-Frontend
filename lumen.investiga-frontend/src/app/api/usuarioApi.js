@@ -40,12 +40,19 @@ const guardarTrabajo = async (payload) => {
 }
 
 const eliminarTrabajo = async (userId, trabajoId) => {
-  const url = `${endpoint}/eliminar`;
+  const url = endpoint.concat("/eliminar");
   const params = { userId, trabajoId };
+  
   return await api.getParams(url, params);
 }
 
-const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser, guardarTrabajo, eliminarTrabajo, modificarDatos, subirFoto }
+const cambiarPassword = async (payload) => {
+  const url = endpoint.concat("/password")
+
+  return await api.put(url, payload);
+}
+
+const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser, guardarTrabajo, eliminarTrabajo, modificarDatos, subirFoto, cambiarPassword }
 
 
 export default usuarioAPI
