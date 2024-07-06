@@ -27,6 +27,12 @@ const guardarTrabajo = async (payload) => {
   return await api.post(url, payload)
 }
 
-const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser, guardarTrabajo}
+const eliminarTrabajo = async (userId, trabajoId) => {
+  const url = `${endpoint}/eliminar`;
+  const params = { userId, trabajoId };
+  return await api.getParams(url, params);
+}
+
+const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser, guardarTrabajo, eliminarTrabajo }
 
 export default usuarioAPI

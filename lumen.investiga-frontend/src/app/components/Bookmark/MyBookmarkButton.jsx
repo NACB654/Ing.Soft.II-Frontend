@@ -24,6 +24,12 @@ export default function MyBookmarkButton({userId, trabajoId, isMarked}) {
     }
     else {
       //Logica para eliminar el trabajo
+      
+      const result = await usuarioAPI.eliminarTrabajo(userId, trabajoId);
+      if (result.data) {
+        alert("Trabajo eliminado de tu perfil");
+        setMarked(!marked);
+      }
     }
   }
 
