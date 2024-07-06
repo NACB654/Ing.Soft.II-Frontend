@@ -37,7 +37,7 @@ export default function HeaderLayout({ children }) {
         <div className={styles.profile}>
           <p className={styles.textProfile}>{userData?.name +  " " + userData?.last_name}</p>
           <button className={styles.buttonProfile} onClick={() => router.push("/home/profile")}>
-            <Image src="/user.png" alt="avatar" width={70} height={70} />
+            <Image src={userData?.foto_url == null ? "/user.png" : userData?.foto_url} alt="avatar" width={70} height={70} />
           </button>
         </div>
       </header>

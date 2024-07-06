@@ -9,6 +9,12 @@ const iniciarSesion = async (payload) => {
   return await api.post(url, payload);
 }
 
+const modificarDatos = async (payload) => {
+  const url = endpoint.concat("/modificar")
+
+  return await api.put(url, payload);
+}
+
 const registrarUsaurio = async (payload) => {
   const url = endpoint.concat("/registro")
 
@@ -21,10 +27,16 @@ const getUser = async (id) => {
   return await api.get(url)
 }
 
+const subirFoto = async (payload) => {
+  const url = endpoint.concat("/foto")
+
+  return await api.postFormData(url, payload)
+}
+
 const guardarTrabajo = async (payload) => {
   const url = endpoint.concat("/guardar")
 
-  return await api.post(url, payload)
+  return await api.put(url, payload)
 }
 
 const eliminarTrabajo = async (userId, trabajoId) => {
@@ -33,6 +45,7 @@ const eliminarTrabajo = async (userId, trabajoId) => {
   return await api.getParams(url, params);
 }
 
-const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser, guardarTrabajo, eliminarTrabajo }
+const usuarioAPI = { iniciarSesion, registrarUsaurio, getUser, guardarTrabajo, eliminarTrabajo, modificarDatos, subirFoto }
+
 
 export default usuarioAPI
