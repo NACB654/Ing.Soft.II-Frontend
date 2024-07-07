@@ -36,7 +36,7 @@ const subirFoto = async (payload) => {
 const guardarTrabajo = async (payload) => {
   const url = endpoint.concat("/guardar")
 
-  return await api.put(url, payload)
+  return await api.post(url, payload)
 }
 
 const eliminarTrabajo = async (userId, trabajoId) => {
