@@ -177,6 +177,7 @@ export default function ProfilePage() {
     formValues.periodoId = periodo.id;
     formValues.ods = odsId.map((item) => item.id);
     formValues.profesor = user?.name;
+    formValues.puntaje = 0;
     console.log(formValues)
 
     const result = await profesorAPI.subirTrabajo(formValues);
