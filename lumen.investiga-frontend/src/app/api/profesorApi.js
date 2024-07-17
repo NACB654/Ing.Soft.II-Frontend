@@ -9,6 +9,12 @@ const subirTrabajo = async (payload) => {
   return await api.post(url, payload)
 }
 
-const profesorAPI = { subirTrabajo }
+const subirPdf = async (payload) => {
+  const url = endpoint.concat("/pdf")
+
+  return await api.postFormData(url, payload)
+}
+
+const profesorAPI = { subirTrabajo, subirPdf }
 
 export default profesorAPI

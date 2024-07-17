@@ -12,6 +12,7 @@ export default function ResultPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [value, setValue] = useState("");
   const [resultados, setResultados] = useState([{}]);
   const [selectedArea, setSelectedArea] = useState("");
@@ -95,6 +96,8 @@ export default function ResultPage() {
       );
       setOds(ods);
     }
+
+    setIsLoading(!isLoading);
   };
 
   const sortResults = (results, order) => {
@@ -170,6 +173,7 @@ export default function ResultPage() {
     if (result.data) {
       console.log(result.data)
       setResultados(result.data)
+      setIsLoading(!isLoading)
     }
   };
 
@@ -197,7 +201,7 @@ export default function ResultPage() {
           </select>
         </div>
         <div className={styles.trabajos}>
-          {currentResults?.map((item, key) => {
+          {!isLoading && currentResults?.map((item, key) => {
             return (
               <ResultCard
                 id={item.id}
@@ -234,7 +238,7 @@ export default function ResultPage() {
       </div>
       <div className={styles.resultados}>
         <div className={styles.tituloResultados}>Filtros</div>
-        <aside className={styles.filters}>
+        <div className={styles.filters}>
           <div className={styles.filterSection}>
             <h3>Área</h3>
             <select value={selectedArea} onChange={handleAreaChange}>
@@ -320,7 +324,7 @@ export default function ResultPage() {
           <div className={styles.boton}>
             <MyButtons label={"Filtrar"} onClick={handleFiltrar} />
           </div>
-        </aside>
+        </div>
       </div>
     </main>
   );

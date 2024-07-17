@@ -37,7 +37,10 @@ export default function RegisterPage() {
   }
 
   const handleClick = async () => {
-    if (values.password == pass2) {
+    if (values.name == "" || values.last_name == "" || values.codigo == "") {
+      alert("No se ha llenado todos los campos")
+    }
+    else if (values.password == pass2) {
       const result = await usuarioAPI.registrarUsaurio(values)
 
       if (result.data) {
@@ -47,7 +50,7 @@ export default function RegisterPage() {
       }
     }
     else {
-      alert("La confirma bien tu contraseña")
+      alert("Las contraeñas no coinciden")
     }
   }
 

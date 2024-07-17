@@ -29,8 +29,10 @@ export default function PasswordPage() {
   const handleClick = async () => {
     console.log(values.password);
     console.log(password2);
-      
-    if (values.password == password2) {
+    
+    if (values.password == "" || password2 == "") {
+      alert("No se ha ingresado ningun dato")
+    } else if (values.password == password2) {
       const result = await usuarioAPI.cambiarPassword({
         id: user?.id,
         password: values.password,

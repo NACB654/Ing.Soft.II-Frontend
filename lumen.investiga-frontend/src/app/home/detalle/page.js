@@ -16,11 +16,11 @@ export default function DetallePage() {
   const user = useUserContext();
   const searchParams = useSearchParams();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [trabajo, setTrabajo] = useState({});
   const [comentarios, setComentarios] = useState([{}]);
   const [value, setValue] = useState("");
   const [isMarked, setIsMarked] = useState(false);
-  const [loading, setLoading] = useState(true)
 
   const handleLoad = async () => {
     const query = searchParams.get("id");
@@ -31,12 +31,12 @@ export default function DetallePage() {
       // console.log(result.data);
       setTrabajo(result.data);
 
-      if (result.data.usuarios.filter(item => item.id == user.id).length > 0) {
+      if (result.data.usuarios.filter(item => item.id == user?.id).length > 0) {
         // console.log("hola")
         setIsMarked(true)
       }
 
-      setLoading(false)
+      setIsLoading(!isLoading)
     }
   };
 
@@ -73,7 +73,7 @@ export default function DetallePage() {
 
   return (
     <main className={styles.main}>
-      <section className={styles.detalle}>
+      {!isLoading && <section className={styles.detalle}>
         <div className={styles.trabajo1}>
           <h2 className={styles.h2}>{trabajo?.titulo}</h2>
           <p className={styles.abstract}>{trabajo?.abstract}</p>
@@ -93,13 +93,13 @@ export default function DetallePage() {
           />
           <div className={styles.rating}>
             <MyRating readOnly={false} rating={0} trabajoId={trabajo?.id} />
-            {!user?.isTeacher && !loading ? (
+            {!user?.isTeacher && (
               <MyBookmarkButton
                 userId={user?.id}
                 trabajoId={trabajo?.id}
                 isMarked={isMarked}
               />
-            ) : null}
+            )}
           </div>
         </div>
         <div className={styles.trabajo2}>
@@ -134,7 +134,7 @@ export default function DetallePage() {
             </p>
           </div>
         </div>
-      </section>
+      </section>}
       <section className={styles.comentarios}>
         <MyTextArea
           name={"descripcion"}
@@ -146,7 +146,7 @@ export default function DetallePage() {
       </section>
       <section className={styles.listaComentarios}>
         <label className={styles.label}>Comentarios</label>
-        {comentarios.length > 0 ? (
+        {!isLoading && comentarios.length > 0 ? (
           comentarios?.map((item, key) => {
             return (
               <div className={styles.comentario}>

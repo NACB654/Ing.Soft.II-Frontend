@@ -23,6 +23,7 @@ export default function ProfilePage() {
   const user = useUserContext();
   const router = useRouter();
   
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedImage, setSelectedImage] = useState(user?.foto_url);
   const [showInsertPage, setShowInsertPage] = useState(false);
@@ -45,6 +46,7 @@ export default function ProfilePage() {
   const [curso, setCurso] = useState([""]);
   const [periodo, setPeriodo] = useState([""]);
   const [odsId, setOdsId] = useState([""]);
+  const [pdf, setPdf] = useState({name: "", url: ""});
 
   const handleLoadAreas = async () => {
     const result = await areasAPI.getAreasYSubareas();
@@ -114,6 +116,7 @@ export default function ProfilePage() {
       console.log(result.data);
       setSubidos(result.data);
     }
+    setIsLoading(!isLoading)
   };
 
   const handleLoadGuardados = async () => {
@@ -123,6 +126,7 @@ export default function ProfilePage() {
       console.log(result.data);
       setGuardados(result.data);
     }
+    setIsLoading(!isLoading)
   };
 
   useEffect(() => {
@@ -171,24 +175,56 @@ export default function ProfilePage() {
     }
   };
 
-  const handleSubirArchivo = async () => {
-    formValues.subareaId = subarea.id;
-    formValues.cursoId = curso.id;
-    formValues.periodoId = periodo.id;
-    formValues.ods = odsId.map((item) => item.id);
-    formValues.profesor = user?.name;
-    formValues.puntaje = 0;
-    console.log(formValues)
+  const handlePdfChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("hola")
+      const formData = new FormData();
+      formData.append("file", file)
 
-    const result = await profesorAPI.subirTrabajo(formValues);
-    console.log(result);
+      const result = await profesorAPI.subirPdf(formData)
 
-    if (result.data) {
-      console.log(result.data);
-      alert("Trabajo creado");
-      location.reload();
+      if (result.data) {
+        console.log(result.data)
+        const data = {
+          name: file.name,
+          url: result.data.url
+        }
+        setPdf(data);
+      }
     }
-    // setShowInsertPage(false);
+    else {
+      alert("Error al subir archivo. Intentelo de nuevo")
+    }
+  };
+
+  const handleSubirArchivo = async () => {
+    if (
+      formValues.titulo == "" ||
+      formValues.abstract == "" ||
+      formValues.keywords == ""
+    ) {
+      alert("Faltan datos por completar");
+    } else {
+      formValues.subareaId = subarea.id;
+      formValues.cursoId = curso.id;
+      formValues.periodoId = periodo.id;
+      formValues.ods = odsId.map((item) => item.id);
+      formValues.profesor = user?.name;
+      formValues.puntaje = 0;
+      formValues.archivo_url = pdf.url
+      console.log(formValues);
+
+      const result = await profesorAPI.subirTrabajo(formValues);
+      console.log(result);
+
+      if (result.data) {
+        console.log(result.data);
+        alert("Trabajo creado");
+        location.reload();
+      }
+      // setShowInsertPage(false);
+    }
   };
 
   const handleShowInsertPage = () => {
@@ -196,14 +232,20 @@ export default function ProfilePage() {
   };
 
   const handleModificar = async () => {
-    const data = values;
-    data.id = user.id
-    const result = await usuarioAPI.modificarDatos(data);
-
-    if (result.data) {
-      alert("Los datos han sido actualizados")
-      location.reload()
+    if (values.name == "" || values.last_name == "" || values.email == "" || values.codigo == "") {
+      alert("Complete todos los datos")
     }
+    else {
+      const data = values;
+      data.id = user.id
+      const result = await usuarioAPI.modificarDatos(data);
+
+      if (result.data) {
+        alert("Los datos han sido actualizados")
+        location.reload();
+      }
+    }
+    
   }
 
   return (
@@ -216,7 +258,7 @@ export default function ProfilePage() {
           onChange={handleTabChange}
         />
       </div>
-      {selectedTab === 0 && (
+      {selectedTab === 0 && !isLoading && (
         <div className={styles.total}>
           <div className={styles.datos}>
             <div className={styles.contenedores}>
@@ -251,7 +293,11 @@ export default function ProfilePage() {
                 />
               </div>
               <div className={styles.botones}>
-                <MyButtons label={"Modificar"} width={"180px"} onClick={handleModificar} />
+                <MyButtons
+                  label={"Modificar"}
+                  width={"180px"}
+                  onClick={handleModificar}
+                />
                 <MyButtons
                   label={"Cambiar contraseña"}
                   variant="outlined"
@@ -262,8 +308,16 @@ export default function ProfilePage() {
             </div>
           </div>
           <div className={styles.cambiar}>
-            {/* <img className={styles.imagen} src={selectedImage == null ? "/user.png" : selectedImage} /> */}
-            <Image src={selectedImage == null ? "/user.png" : selectedImage} alt="foto_perfil" width={200} height={200} />
+            <Image
+              src={
+                selectedImage == "" || selectedImage == null
+                  ? "/user.png"
+                  : selectedImage
+              }
+              alt="foto_perfil"
+              width={200}
+              height={200}
+            />
             <MyButtons
               label={"Cambiar foto"}
               onClick={() => document.getElementById("upload-image").click()}
@@ -445,13 +499,21 @@ export default function ProfilePage() {
                 options={cursos}
                 onChange={(e, curso) => setCurso(curso)}
               />
-              <MyTextInput
-                label={"Archivo PDF"}
-                placeholder={"Ingrese la url del archivo"}
-                name={"archivo_url"}
-                width={"600px"}
-                onChange={handleFormChange}
-              />
+              <div className={styles.pdf}>
+                <p className={styles.pdfName}>{ pdf.name }</p>
+                <MyButtons
+                  label={"Buscar archivo"}
+                  onClick={() => document.getElementById("upload-pdf").click()}
+                />
+                <input
+                  className={styles}
+                  id="upload-pdf"
+                  type="file"
+                  accept=".pdf"
+                  style={{ display: "none" }}
+                  onChange={handlePdfChange}
+                />
+              </div>
               <MyButtons label={"Subir archivo"} onClick={handleSubirArchivo} />
             </div>
           )}
